@@ -11,6 +11,6 @@ namespace BankManagement.Entities
         public string Address { get; set; } = null!;
         public CustomerType CustomerType { get; set; }
 
-        public List <CustomerAccount> customerAccounts { get; set; } 
+        public List <CustomerAccount> CustomerAccounts { get; set; } 
     }
 }
