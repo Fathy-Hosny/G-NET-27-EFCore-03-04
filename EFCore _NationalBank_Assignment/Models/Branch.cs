@@ -9,7 +9,7 @@ namespace BankManagement.Entities
         public string Address { get; set; } = null!;
         public string Phone { get; set; } = null!;
 
-        public List <Manager> Managers { get; set; } 
+        public Manager Managers { get; set; } 
         public List <Account> Accounts { get; set; } 
     }
 }

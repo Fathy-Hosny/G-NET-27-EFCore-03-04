@@ -11,7 +11,7 @@ namespace EFCore__NationalBank_Assignment.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
          
-            optionsBuilder.UseSqlServer( @"Server=.;Database=NationalBankDB;Trusted_Connection=True; TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Server=.;Database=NationalBankDB;Trusted_Connection=True;TrustServerCertificate=True;");
 
         }
 
