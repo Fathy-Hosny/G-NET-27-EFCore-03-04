@@ -4,14 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BankManagementSystem.Configurations;
 
-public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
+public class TransactionConfiguration : IEntityTypeConfiguration<Transactions>
 {
-    public void Configure(EntityTypeBuilder<Transaction> builder)
+    public void Configure(EntityTypeBuilder<Transactions> builder)
     {
         builder.ToTable("Transactions");
 
         builder.HasKey(t => t.TransactionId);
-
         builder.Property(t => t.TransactionType)
                .IsRequired()
                .HasConversion<string>();
@@ -26,10 +25,9 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.Property(t => t.Description)
                .HasMaxLength(300);
 
-     
         builder.HasOne(t => t.Account)
                .WithMany(a => a.Transactions)
                .HasForeignKey(t => t.AccountId)
-               .OnDelete(DeleteBehavior.NoAction);
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

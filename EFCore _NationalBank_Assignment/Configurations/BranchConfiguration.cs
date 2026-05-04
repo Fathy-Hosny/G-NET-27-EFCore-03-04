@@ -10,26 +10,22 @@ public class BranchConfiguration : IEntityTypeConfiguration<Branch>
     {
         builder.ToTable("Branches");
 
-        builder.HasKey(b => b.BranchId);
+        builder.HasKey(b => b.BranchCode);
 
         builder.Property(b => b.BranchCode)
-               .IsRequired()
                .HasMaxLength(20);
-
-        builder.HasIndex(b => b.BranchCode)
-               .IsUnique();
 
         builder.Property(b => b.BranchName)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(100);
 
         builder.Property(b => b.City)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(100);
 
         builder.Property(b => b.Address)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(200);
 
         builder.Property(b => b.Phone)
                .IsRequired()

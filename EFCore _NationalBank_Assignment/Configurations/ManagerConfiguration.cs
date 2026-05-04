@@ -14,11 +14,12 @@ public class ManagerConfiguration : IEntityTypeConfiguration<Manager>
 
         builder.Property(m => m.FullName)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(100);
 
         builder.Property(m => m.Email)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(150);
+
         builder.HasIndex(m => m.Email)
                .IsUnique();
 
@@ -29,13 +30,11 @@ public class ManagerConfiguration : IEntityTypeConfiguration<Manager>
         builder.Property(m => m.HireDate)
                .IsRequired();
 
-        
         builder.HasOne(m => m.Branch)
                .WithOne(b => b.Managers)
-               .HasForeignKey<Manager>(m => m.BranchId)
+                    .HasForeignKey<Manager>(m => m.BranchCode)
+
                .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(m => m.BranchId)
-               .IsUnique();
     }
 }

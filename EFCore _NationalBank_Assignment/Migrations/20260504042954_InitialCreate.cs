@@ -18,17 +18,15 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 name: "Branches",
                 columns: table => new
                 {
-                    BranchId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     BranchCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    BranchName = table.Column<string>(type: "nvarchar", nullable: false),
-                    City = table.Column<string>(type: "nvarchar", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar", nullable: false),
+                    BranchName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Branches", x => x.BranchId);
+                    table.PrimaryKey("PK_Branches", x => x.BranchCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,15 +34,15 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 columns: table => new
                 {
                     CustomerId = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [CustomerSequence]"),
-                    FullName = table.Column<string>(type: "varchar", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NationalId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CustomerType = table.Column<int>(type: "int", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar", nullable: false),
-                    TaxNumber = table.Column<string>(type: "nvarchar", nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    TaxNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Industry = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -57,7 +55,7 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 columns: table => new
                 {
                     CustomerId = table.Column<int>(type: "int", nullable: false, defaultValueSql: "NEXT VALUE FOR [CustomerSequence]"),
-                    FullName = table.Column<string>(type: "varchar", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     NationalId = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
@@ -78,21 +76,21 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AccountNumber = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AccountNumber = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     AccountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AccountStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AccountStatus = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Active"),
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false, defaultValue: 0m),
                     OpenedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: false)
+                    BranchCode = table.Column<string>(type: "nvarchar(20)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Accounts", x => x.AccountId);
                     table.ForeignKey(
-                        name: "FK_Accounts_Branches_BranchId",
-                        column: x => x.BranchId,
+                        name: "FK_Accounts_Branches_BranchCode",
+                        column: x => x.BranchCode,
                         principalTable: "Branches",
-                        principalColumn: "BranchId",
+                        principalColumn: "BranchCode",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -102,20 +100,20 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 {
                     ManagerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    BranchId = table.Column<int>(type: "int", nullable: false)
+                    BranchCode = table.Column<string>(type: "nvarchar(20)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Managers", x => x.ManagerId);
                     table.ForeignKey(
-                        name: "FK_Managers_Branches_BranchId",
-                        column: x => x.BranchId,
+                        name: "FK_Managers_Branches_BranchCode",
+                        column: x => x.BranchCode,
                         principalTable: "Branches",
-                        principalColumn: "BranchId",
+                        principalColumn: "BranchCode",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -135,8 +133,7 @@ namespace EFCore__NationalBank_Assignment.Migrations
                         name: "FK_CustomerAccounts_Accounts_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Accounts",
-                        principalColumn: "AccountId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AccountId");
                 });
 
             migrationBuilder.CreateTable(
@@ -158,7 +155,8 @@ namespace EFCore__NationalBank_Assignment.Migrations
                         name: "FK_Transactions_Accounts_AccountId",
                         column: x => x.AccountId,
                         principalTable: "Accounts",
-                        principalColumn: "AccountId");
+                        principalColumn: "AccountId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -168,15 +166,9 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accounts_BranchId",
+                name: "IX_Accounts_BranchCode",
                 table: "Accounts",
-                column: "BranchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Branches_BranchCode",
-                table: "Branches",
-                column: "BranchCode",
-                unique: true);
+                column: "BranchCode");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BusinessCustomers_Email",
@@ -215,9 +207,9 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Managers_BranchId",
+                name: "IX_Managers_BranchCode",
                 table: "Managers",
-                column: "BranchId",
+                column: "BranchCode",
                 unique: true);
 
             migrationBuilder.CreateIndex(

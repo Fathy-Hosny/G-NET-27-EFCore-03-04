@@ -9,11 +9,11 @@ namespace BankManagement.Entities
         public decimal Balance { get; set; } = 0;
         public DateTime OpenedDate { get; set; } = DateTime.Now;
 
-        public int BranchId { get; set; }
+        public string BranchCode { get; set; }
         public Branch Branch { get; set; } = null!;
 
      
         public List <CustomerAccount> CustomerAccounts { get; set; } 
-        public List <Transaction> Transactions { get; set; } 
+        public List <Transactions> Transactions { get; set; } 
     }
 }

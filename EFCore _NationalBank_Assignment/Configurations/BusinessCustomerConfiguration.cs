@@ -8,12 +8,11 @@ public class BusinessCustomerConfiguration : IEntityTypeConfiguration<BusinessCu
 {
     public void Configure(EntityTypeBuilder<BusinessCustomer> builder)
     {
-
         builder.ToTable("BusinessCustomers");
 
         builder.Property(c => c.FullName)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(100);
 
         builder.Property(c => c.NationalId)
                .IsRequired()
@@ -42,11 +41,12 @@ public class BusinessCustomerConfiguration : IEntityTypeConfiguration<BusinessCu
 
         builder.Property(c => c.CompanyName)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(200);
 
         builder.Property(c => c.TaxNumber)
                .IsRequired()
-               .HasColumnType("nvarchar");
+               .HasMaxLength(50);
+
         builder.HasIndex(c => c.TaxNumber)
                .IsUnique();
     }

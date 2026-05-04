@@ -8,12 +8,11 @@ public class IndividualCustomerConfiguration : IEntityTypeConfiguration<Individu
 {
     public void Configure(EntityTypeBuilder<IndividualCustomer> builder)
     {
-
         builder.ToTable("IndividualCustomers");
 
         builder.Property(c => c.FullName)
                .IsRequired()
-              .HasColumnType("varchar");
+               .HasMaxLength(100);
 
         builder.Property(c => c.NationalId)
                .IsRequired()
@@ -23,18 +22,19 @@ public class IndividualCustomerConfiguration : IEntityTypeConfiguration<Individu
                .IsUnique();
 
         builder.Property(c => c.Email)
-               .IsRequired();
-
+               .IsRequired()
+               .HasMaxLength(150);
 
         builder.HasIndex(c => c.Email)
                .IsUnique();
 
         builder.Property(c => c.Phone)
-               .IsRequired();
+               .IsRequired()
+               .HasMaxLength(20);
 
         builder.Property(c => c.Address)
-               .IsRequired();
-
+               .IsRequired()
+               .HasMaxLength(200);
 
         builder.Property(c => c.DateOfBirth)
                .IsRequired();

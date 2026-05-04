@@ -13,8 +13,8 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.HasKey(a => a.AccountId);
 
         builder.Property(a => a.AccountNumber)
-               .IsRequired();
-             
+               .IsRequired()
+               .HasMaxLength(50);
 
         builder.HasIndex(a => a.AccountNumber)
                .IsUnique();
@@ -25,8 +25,8 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         builder.Property(a => a.AccountStatus)
                .IsRequired()
-               .HasConversion<string>();
-              
+               .HasConversion<string>()
+               .HasDefaultValue(AccountStatus.Active);
 
         builder.Property(a => a.Balance)
                .HasColumnType("decimal(18,2)")
@@ -38,7 +38,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         builder.HasOne(a => a.Branch)
                .WithMany(b => b.Accounts)
-               .HasForeignKey(a => a.BranchId)
+              .HasForeignKey(a => a.BranchCode)
                .OnDelete(DeleteBehavior.Restrict);
     }
 }

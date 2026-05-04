@@ -34,11 +34,14 @@ namespace EFCore__NationalBank_Assignment.Migrations
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("AccountStatus")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Active");
 
                     b.Property<string>("AccountType")
                         .IsRequired()
@@ -49,8 +52,9 @@ namespace EFCore__NationalBank_Assignment.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasDefaultValue(0m);
 
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                    b.Property<string>("BranchCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("OpenedDate")
                         .HasColumnType("datetime2");
@@ -60,45 +64,38 @@ namespace EFCore__NationalBank_Assignment.Migrations
                     b.HasIndex("AccountNumber")
                         .IsUnique();
 
-                    b.HasIndex("BranchId");
+                    b.HasIndex("BranchCode");
 
                     b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("BankManagement.Entities.Branch", b =>
                 {
-                    b.Property<int>("BranchId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BranchId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar");
-
                     b.Property<string>("BranchCode")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("BranchName")
                         .IsRequired()
-                        .HasColumnType("nvarchar");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("BranchId");
-
-                    b.HasIndex("BranchCode")
-                        .IsUnique();
+                    b.HasKey("BranchCode");
 
                     b.ToTable("Branches", (string)null);
                 });
@@ -130,7 +127,8 @@ namespace EFCore__NationalBank_Assignment.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("varchar");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NationalId")
                         .IsRequired()
@@ -179,16 +177,19 @@ namespace EFCore__NationalBank_Assignment.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ManagerId"));
 
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
+                    b.Property<string>("BranchCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("HireDate")
                         .HasColumnType("datetime2");
@@ -200,7 +201,7 @@ namespace EFCore__NationalBank_Assignment.Migrations
 
                     b.HasKey("ManagerId");
 
-                    b.HasIndex("BranchId")
+                    b.HasIndex("BranchCode")
                         .IsUnique();
 
                     b.HasIndex("Email")
@@ -209,7 +210,7 @@ namespace EFCore__NationalBank_Assignment.Migrations
                     b.ToTable("Managers", (string)null);
                 });
 
-            modelBuilder.Entity("BankManagement.Entities.Transaction", b =>
+            modelBuilder.Entity("BankManagement.Entities.Transactions", b =>
                 {
                     b.Property<int>("TransactionId")
                         .ValueGeneratedOnAdd()
@@ -247,7 +248,8 @@ namespace EFCore__NationalBank_Assignment.Migrations
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
-                        .HasColumnType("nvarchar");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Industry")
                         .IsRequired()
@@ -255,7 +257,8 @@ namespace EFCore__NationalBank_Assignment.Migrations
 
                     b.Property<string>("TaxNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -294,7 +297,7 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 {
                     b.HasOne("BankManagement.Entities.Branch", "Branch")
                         .WithMany("Accounts")
-                        .HasForeignKey("BranchId")
+                        .HasForeignKey("BranchCode")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -306,7 +309,7 @@ namespace EFCore__NationalBank_Assignment.Migrations
                     b.HasOne("BankManagement.Entities.Account", "Account")
                         .WithMany("CustomerAccounts")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BankManagement.Entities.Customer", "Customer")
@@ -324,19 +327,19 @@ namespace EFCore__NationalBank_Assignment.Migrations
                 {
                     b.HasOne("BankManagement.Entities.Branch", "Branch")
                         .WithOne("Managers")
-                        .HasForeignKey("BankManagement.Entities.Manager", "BranchId")
+                        .HasForeignKey("BankManagement.Entities.Manager", "BranchCode")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("BankManagement.Entities.Transaction", b =>
+            modelBuilder.Entity("BankManagement.Entities.Transactions", b =>
                 {
                     b.HasOne("BankManagement.Entities.Account", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Account");

@@ -23,7 +23,7 @@ namespace EFCore__NationalBank_Assignment.Data
         public DbSet<BusinessCustomer> BusinessCustomers { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<CustomerAccount> CustomerAccounts { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Transactions> Transactions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
            

@@ -1,6 +1,6 @@
 namespace BankManagement.Entities
 {
-    public class Transaction
+    public class Transactions
     {
         public int TransactionId { get; set; }
         public decimal Amount { get; set; }
